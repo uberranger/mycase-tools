@@ -1,0 +1,16 @@
+{
+    "manifest_version": 3,
+    "name": "MyCase Pro Tools",
+    "version": "1.0",
+    "description": "Adds various tools to MyCase.",
+    "permissions": [],
+    "host_permissions": [
+      "https://public.courts.in.gov/mycase/*"
+    ],
+    "content_scripts": [
+      {
+        "matches": ["https://public.courts.in.gov/mycase/*"],
+        "js": ["content.js"]
+      }
+    ]
+  }
