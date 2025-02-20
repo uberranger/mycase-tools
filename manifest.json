@@ -5,11 +5,15 @@
     "description": "Adds various tools to MyCase.",
     "permissions": [],
     "host_permissions": [
-      "https://public.courts.in.gov/mycase/*"
+      "https://public.courts.in.gov/mycase/*",
+      "https://public.courts.in.gov/AttorneyDashboard/*"
     ],
     "content_scripts": [
       {
-        "matches": ["https://public.courts.in.gov/mycase/*"],
+        "matches": [
+          "https://public.courts.in.gov/mycase/*",
+          "https://public.courts.in.gov/AttorneyDashboard/*"
+        ],
         "js": ["content.js"]
       }
     ]

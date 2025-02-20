@@ -11,10 +11,12 @@
         const darkModeStyle = document.createElement('style');
         darkModeStyle.textContent = `@media (prefers-color-scheme: dark) {
             :root, html, body, footer, .footer, footer div, .footer div, .panel, .form-control, .nav-tabs>li>a, .nav-tabs>li>a:hover, .nav-tabs>li.active>a,
-            .nav-tabs>li.active>a:hover, .navbar-inverse, nav.framework-header.navbar.navbar-inverse, div.nav-subrow, .alert-info, .btn-default {
-                color-scheme: dark;
+            .nav-tabs>li.active>a:hover, .navbar-inverse, nav.framework-header.navbar.navbar-inverse, div.nav-subrow, .alert-info, .btn-default, option {
+                // color-scheme: dark;
                 // background-color: unset;
                 background: unset;
+                background-color:black;
+
                 color: white;
             }
             div.nav-subrow {
@@ -33,7 +35,7 @@
                 background-color: deepskyblue;
             }
             tr:hover, .table-hover>tbody>tr:hover {
-                background-color: dimgrey;
+                background-color: #252525;
             }
             .text-primary {
                 color: lightblue;
@@ -43,6 +45,10 @@
             }
             .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover {
                 border-width: medium;
+            }
+
+            .panel-default>.panel-heading {
+                background-color: white;
             }
         }`;
         document.head.appendChild(darkModeStyle);
