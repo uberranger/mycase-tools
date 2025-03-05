@@ -1,58 +1,54 @@
 (function() {
     'use strict';
 
-    window.addEventListener("load", () => {
-        console.log("MyCase Tools Script Loaded!");
+    console.log("MyCase Tools Script Loaded!");
 
-        const maxRefreshAttempts = 10;
-        let docLinks = [];
-        let expanded = false;
-        
-        const darkModeStyle = document.createElement('style');
-        darkModeStyle.textContent = `@media (prefers-color-scheme: dark) {
-            :root, html, body, footer, .footer, footer div, .footer div, .panel, .form-control, .nav-tabs>li>a, .nav-tabs>li>a:hover, .nav-tabs>li.active>a,
-            .nav-tabs>li.active>a:hover, .navbar-inverse, nav.framework-header.navbar.navbar-inverse, div.nav-subrow, .alert-info, .btn-default, option {
-                // color-scheme: dark;
-                // background-color: unset;
-                background: unset;
-                background-color:black;
+    const maxRefreshAttempts = 10;
+    let docLinks = [];
+    let expanded = false;
+    
+    const darkModeStyle = document.createElement('style');
+    darkModeStyle.textContent = `:root, html, body, footer, .footer, footer div, .footer div, .panel, .form-control, .nav-tabs>li>a, .nav-tabs>li>a:hover, .nav-tabs>li.active>a,
+        .nav-tabs>li.active>a:hover, .navbar-inverse, nav.framework-header.navbar.navbar-inverse, div.nav-subrow, .alert-info, .btn-default, option {
+            // color-scheme: dark;
+            // background-color: unset;
+            background: unset;
+            background-color:black;
 
-                color: white;
-            }
-            div.nav-subrow {
-                background: unset !important;
-            }
-            .table-striped>tbody>tr:nth-of-type(odd) {
-                background-color: unset;
-            }
-            .modal-content, .modal-content .modal-header, .modal-content .modal-footer {
-                background-color: rgba(0, 0, 0, .8);
-            }
-            a {
-                color: deepskyblue;
-            }
-            .btn-primary, .btn-primary:hover {
-                background-color: deepskyblue;
-            }
-            tr:hover, .table-hover>tbody>tr:hover {
-                background-color: #252525;
-            }
-            .text-primary {
-                color: lightblue;
-            }
-            .text-muted { 
-                color: white;
-            }
-            .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover {
-                border-width: medium;
-            }
-
-            .panel-default>.panel-heading {
-                background-color: white;
-            }
+            color: white;
+        }
+        div.nav-subrow {
+            background: unset !important;
+        }
+        .table-striped>tbody>tr:nth-of-type(odd) {
+            background-color: unset;
+        }
+        .modal-content, .modal-content .modal-header, .modal-content .modal-footer {
+            background-color: rgba(0, 0, 0, .8);
+        }
+        a {
+            color: deepskyblue;
+        }
+        .btn-primary, .btn-primary:hover {
+            background-color: deepskyblue;
+        }
+        tr:hover, .table-hover>tbody>tr:hover, .panel-default>.panel-heading {
+            background-color: #222;
+            color: white;
+        }
+        .text-primary {
+            color: lightblue;
+        }
+        .text-muted { 
+            color: lightgrey;
+        }
+        .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover {
+            border-width: medium;
         }`;
-        document.head.appendChild(darkModeStyle);
+    
+    document.head.appendChild(darkModeStyle);
         
+    window.addEventListener("load", () => {
         const buttonContainer = document.createElement("div");
         buttonContainer.id = "mycaseToolContainer"
         const downloadButton = document.createElement("button");
@@ -89,14 +85,11 @@
 
         buttonContainer.appendChild(downloadButton);
         buttonContainer.appendChild(refreshButton);
-        
-
-        
 
         const hasExpandTitle = (a) => a.getAttribute("title") && a.getAttribute("title").includes("Click to expand");
 
         const isMiddleLink = (a) => a.parentNode.className.includes("media-middle") && a.parentNode.className.includes("media-body");
-
+        
         const toggleExpands = () => {
             const expandLinks = Array.from(document.querySelectorAll("a")).filter(a => hasExpandTitle(a) && isMiddleLink(a));
             if (expandLinks.length > 0) {
@@ -106,6 +99,8 @@
         }
 
         const checkDocLinks = () => {
+            highlightHearings();
+
             if (refreshAttempts >= maxRefreshAttempts) {
                 downloadButton.textContent = "No Documents Found";
                 clearInterval(checkInterval);
@@ -142,6 +137,26 @@
                     // count++;
                     // console.info(count, ". clicked",a.getAttribute("title"))
                 }, i * 100);
+            });
+        }
+
+        const highlightHearings = () => {
+            document.querySelectorAll("tr").forEach(tr => {
+                if (tr.textContent.toLowerCase().includes("session")) {
+                    tr.style.borderLeft = "10px solid firebrick";
+                } else if (tr.textContent.toLowerCase().includes("automated enotice")) {
+                    tr.style.borderLeft = "10px solid saddlebrown";
+                } else if (tr.textContent.toLowerCase().includes("automated paper")) {
+                    tr.style.borderLeft = "10px solid midnightblue";
+                } else if (tr.textContent.toLowerCase().includes("appearance filed")) {
+                    tr.style.borderLeft = "10px solid indigo";
+                }
+            });
+        }
+
+        const highlightNotices = () => {
+            document.querySelectorAll("tr").forEach(tr => {
+                
             });
         }
 
