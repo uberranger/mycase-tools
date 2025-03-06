@@ -16,7 +16,8 @@
           "https://public.courts.in.gov/AttorneyDashboard/*",
           "https://public.courts.in.gov/Portal/*"
         ],
-        "js": ["content.js"]
+        "js": ["content.js"],
+        "run_at": "document_start"
       }
     ]
   }
