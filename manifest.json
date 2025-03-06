@@ -12,7 +12,8 @@
         "matches": [
           "https://3604814.app.netsuite.com/*"
         ],
-        "js": ["content.js"]
+        "js": ["content.js"],
+        "run_at": "document_start"
       }
     ],
     "icons": {
