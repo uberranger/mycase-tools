@@ -1,22 +1,21 @@
 {
     "manifest_version": 3,
-    "name": "MyCase Pro Tools",
+    "name": "NetSuite Mod",
     "version": "1.0",
-    "description": "Adds various tools to MyCase.",
+    "description": "Modifies NetSuite to be less stupid.",
     "permissions": [],
     "host_permissions": [
-      "https://public.courts.in.gov/mycase/*",
-      "https://public.courts.in.gov/AttorneyDashboard/*",
-      "https://public.courts.in.gov/Portal/*"
+      "https://3604814.app.netsuite.com/*"
     ],
     "content_scripts": [
       {
         "matches": [
-          "https://public.courts.in.gov/mycase/*",
-          "https://public.courts.in.gov/AttorneyDashboard/*",
-          "https://public.courts.in.gov/Portal/*"
+          "https://3604814.app.netsuite.com/*"
         ],
         "js": ["content.js"]
       }
-    ]
+    ],
+    "icons": {
+      "128": "icon128.png"
+    }
   }

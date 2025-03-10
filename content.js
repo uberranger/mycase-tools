@@ -1,7 +1,10 @@
 (function() {
     'use strict';
 
-    console.log("MyCase Tools Script Loaded!");
+    // let dailyGoal = 6;
+    // let weeklyGoal = 30;
+
+    console.log("NetSuite Mod Loaded!");
 
     const maxRefreshAttempts = 10;
     let docLinks = [];
@@ -81,13 +84,23 @@
         
         #toolContainer > * {
             padding: .5vmax;
-            fontSize: 1.25rem;
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, .5);
             outline: 1px solid dodgerblue;
             color: white;
-            cursor: pointer;
-            // box-shadow: 10px 5px 5px rgb(23, 68, 91);
-        }`;
+            border: none;
+            display: grid;
+            justify-items: center;
+        }
+
+        #modifiedTimeLabel > label {
+            display: grid;
+            grid-template-columns: 8fr 4fr 1fr 4fr 4fr;
+            gap: 1vmax;
+            justify-items: start;
+            width: 100%;
+        }
+    `;
+
     
         document.head.appendChild(darkModeStyle);
         document.head.appendChild(toolContainerStyle);
