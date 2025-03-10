@@ -7,7 +7,13 @@
     let docLinks = [];
     let expanded = false;
     
-    
+    const entryHighlightStyleMap = {
+        "session": "20px solid goldenrod",
+        "automated enotice": "5px solid saddlebrown",
+        "automated paper": "5px solid midnightblue",
+        "appearance filed": "10px solid indigo",
+        "judicial officer": "20px solid green"
+    };
         
     window.addEventListener("load", () => {
         const darkModeStyle = document.createElement("style");
@@ -62,8 +68,12 @@
         toolContainerStyle.textContent = `
         #toolContainer {
             position: fixed;
-            top: 2vmax;
-            left: 2vmax;
+            top: 30%;
+            right: 0;
+            // background: rgba(100, 100, 100, 0.75);
+            backdrop-filter: blur(10px);
+            // outline: 2px solid white;
+            padding: 1vmax 2vmax 1vmax 1vmax;
             z-index: 9999;
             display: flex;
             gap: 1vmax;
@@ -79,9 +89,8 @@
             // box-shadow: 10px 5px 5px rgb(23, 68, 91);
         }`;
     
-    document.head.appendChild(darkModeStyle);
-    document.head.appendChild(toolContainerStyle);
-        
+        document.head.appendChild(darkModeStyle);
+        document.head.appendChild(toolContainerStyle);
 
         const hasExpandTitle = (a) => a.getAttribute("title") && a.getAttribute("title").includes("Click to expand");
 
@@ -139,16 +148,14 @@
 
         const highlightRows = () => {
             document.querySelectorAll("tr").forEach(tr => {
-                if (tr.textContent.toLowerCase().includes("session")) {
-                    tr.style.borderLeft = "20px solid goldenrod";
-                } else if (tr.textContent.toLowerCase().includes("automated enotice")) {
-                    tr.style.borderLeft = "5px solid saddlebrown";
-                } else if (tr.textContent.toLowerCase().includes("automated paper")) {
-                    tr.style.borderLeft = "5px solid midnightblue";
-                } else if (tr.textContent.toLowerCase().includes("appearance filed")) {
-                    tr.style.borderLeft = "10px solid indigo";
-                } else if (tr.textContent.toLowerCase().includes("judicial officer")) {
-                    tr.style.borderLeft = "20px solid green";
+                
+                const trText = tr.textContent.toLowerCase();
+                
+                for (const [keyword, border] of Object.entries(entryHighlightStyleMap)) {
+                    if (trText.includes(keyword)) {
+                        tr.style.borderLeft = border;
+                        break;
+                    }
                 }
             });
         }
@@ -174,8 +181,6 @@
         } else if (document.getElementById("toolContainer")) {
             document.body.removeChild(buttonContainer);
         }
-
-        
 
         let refreshAttempts = 0;
         let checkInterval = setInterval(checkDocLinks, 250);
