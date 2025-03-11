@@ -1,175 +1,188 @@
 (function() {
     'use strict';
 
-    // let dailyGoal = 6;
-    // let weeklyGoal = 30;
+    console.log("MyCase Tools Script Loaded!");
 
-    console.log("NetSuite Mod Loaded!");
-
-    const timeStringToNumber = (timeString) => {
-        const timeParts = timeString.split(":");
-        const hours = +timeParts[0];
-        const minutes = (Math.round(+timeParts[1] / 60 * 10) / 10);
-        return !isNaN(hours + minutes) ? hours + minutes : 0;
-    }    
-
-    const updateTimeLabel = (timeContainer) => {
-        const table = document.getElementById("timesheet_splits");
+    const maxRefreshAttempts = 10;
+    let docLinks = [];
+    let expanded = false;
+    
+    const entryHighlightStyleMap = {
+        "session": "20px solid goldenrod",
+        "automated enotice": "5px solid saddlebrown",
+        "automated paper": "5px solid midnightblue",
+        "appearance filed": "10px solid indigo",
+        "judicial officer": "20px solid green"
+    };
         
-        if (table.length === 0) return;
-
-        const times = Array.from(table.rows[table.rows.length - 1].children).map(c => timeStringToNumber(c.innerText)).filter(t => t > 0);
-
-        const timeBilled = times[times.length - 2];
-        const totalBilled = times[times.length - 1];
-        
-        const now = new Date();
-        const todayHours = now.getHours() - 9;
-        const todayMinutes = Math.trunc((now.getMinutes() / 6)) / 10;
-        
-        let timeElapsed = todayHours + todayMinutes;
-        timeElapsed = timeElapsed > 0 ? timeElapsed : 0;
-
-        while (timeContainer.firstChild) {timeContainer.removeChild(timeContainer.firstChild);}
-
-        const timeHeader = document.createElement("h1");
-        timeContainer.appendChild(timeHeader)
-        timeHeader.textContent = `${timeBilled} Billed Today`;
-
-        const labelText = [
-            ["Billing Efficiency", timeBilled, timeElapsed, (timeBilled / (timeElapsed > 0 ? timeElapsed : 1))],
-            ["Daily Goal", timeBilled, 6, timeBilled / 6],
-            ["Weekly Goal", totalBilled, 30, totalBilled / 30],
-        ];
-
-        for (const [title, current, goal, percent] of labelText) {
-            const label = document.createElement("label");
-            const titleP = document.createElement("p");
-            const currentP = document.createElement("p");
-            const ofP = document.createElement("p");
-            const goalP = document.createElement("p");
-            const percentP = document.createElement("p");
-
-            timeContainer.appendChild(label);
-            label.appendChild(titleP);
-            label.appendChild(currentP);
-            label.appendChild(ofP);
-            label.appendChild(goalP);
-            label.appendChild(percentP);
-
-            titleP.textContent = title
-            currentP.textContent = current;
-            ofP.textContent = "of";
-            goalP.textContent = goal;
-            percentP.textContent = `${(percent * 100).toFixed(0)}%`;
-        }
-    }
-
     window.addEventListener("load", () => {
-        const timeContainerStyle = document.createElement('style');
-        const darkModeStyle = document.createElement('style');
+        const darkModeStyle = document.createElement("style");
         darkModeStyle.textContent = `@media (prefers-color-scheme: dark) {
-            #body, body[data-page-category='form'] #body, .texttable, .listtexthl, .input, input, input[type="text"]:not([id^="uif"]),
-            textarea, input[type="text"]:disabled:not([id^="uif"]), .pgBntG, .uir-button .pgBntG .bntBgB, .uir-button .pgBntG .bntBgB input[type=button],
-            #popup_outerdiv div.uir-filter-area, .nltabcontent, .uir-machine-table-container, .uir-machine-row>td, .uir-list-body, .uir-list-body-wrapper,
-            .uir-list-row-odd>td {
-                background: black !important;
-                background-color: black;
-                color: white !important;
+            :root, html, body, footer, .footer, footer div, .footer div, .panel, .form-control, .nav-tabs>li>a, .nav-tabs>li>a:hover, .nav-tabs>li.active>a,
+            .nav-tabs>li.active>a:hover, .navbar-inverse, nav.framework-header.navbar.navbar-inverse, div.nav-subrow, .alert-info, .btn-default, option {
+                background: unset;
+                background-color:black;
+                color: white;
             }
-            span.uir-label .smallgraytextnolink, .ns-portlet-wrapper div .ns-portlet-header-text, #uir-total-count, .uir-list-filter-bar .smalltextnolink *, .uif9 {
-                color: white !important;
+            div.nav-subrow {
+                background: unset !important;
             }
-            .inputreadonly, input[type="text"]:disabled:not([id^="uif"]) {
-                color: lightgrey !important;        
+            .table-striped>tbody>tr:nth-of-type(odd) {
+                background-color: unset;
             }
-            .uir-page-title-record .uir-record-type {
-                color: lightcyan;
+            .modal-content, .modal-content .modal-header, .modal-content .modal-footer {
+                background-color: rgba(0, 0, 0, .8);
             }
-            a, .dottedlink, .ns-portlet-wrapper[data-portlet-type="calendar"] .ns-title-primary, .uir-list-row-tr .dottedlink, .uir-header-buttons, .uir-button-menu>.ns-menu a {
-                color: skyblue !important;
+            a {
+                color: deepskyblue;
             }
-            
-            td.fgroup_title, div.fgroup_title, div.bgsubtabbar, div.bgsubtabbar, .listheader, body[data-header="refreshed"] #div__header, .listtexthlbold, 
-            .uir-page-title-record .uir-record-status, .ns-portlet-wrapper, .ns-message-component, .ns-ec-tile, #inner_popup_div table tr td,
-            .listtable>tbody>tr:not(.uir-machine-row-last):not(.uir-machine-row-focused)>td, .uir-list-row-even>td, .uir-list-top-button-bar, .uir-list-header-td,
-            .uir-filters-header, .page-title-menu .ns-menu {
-                background: #222 !important;
-                // outline: 1px solid deepskyblue;
-                color: white !important;
+            .btn-primary, .btn-primary:hover {
+                background-color: deepskyblue;
             }
-            .ns-portlet-wrapper[data-portlet-type='calendar'] .ns-monthly-view td.ns-significant-day,
-            .ns-portlet-wrapper[data-portlet-type='calendar'] .ns-monthly-view td {
-                background: black;
+            tr:hover, .table-hover>tbody>tr:hover, .panel-default>.panel-heading {
+                background-color: #222;
+                color: white;
             }
-
-            .ns-dashboard-column .ns-portlet-wrapper[data-portlet-type='calendar'] .ns-monthly-view .ns-today, tr.uir-list-row-tr:hover td {
-                background: dimgrey !important;
+            .text-primary {
+                color: lightblue;
             }
-
-            .ns-portlet-wrapper[data-portlet-type='calendar'] .ns-monthly-view td .ns-event-view .ns-event-content,
-            .ns-portlet-wrapper[data-portlet-type='calendar'] .ns-monthly-view td.ns-significant-day .ns-event-view .ns-event-content,
-            .ns-portlet-wrapper[data-portlet-type='calendar'] .ns-event-view.ns-event-view[data-event-type='event'][data-response-status='noresponse'],
-            .uir-tooltip, #popup_outerdiv div {
-                // background: black;
-                background: #222 !important;
-                // outline: 1px solid deepskyblue;
+            .text-muted { 
+                color: lightgrey;
             }
-
-            .ns-portlet-wrapper[data-portlet-type='calendar'] .ns-daily-view tr:hover td, 
-            .ns-portlet-wrapper[data-portlet-type='calendar'] .ns-daily-view tr:hover th, 
-            .ns-portlet-wrapper[data-portlet-type='calendar'] .ns-weekly-view tr:hover td, 
-            .ns-portlet-wrapper[data-portlet-type='calendar'] .ns-weekly-view tr:hover .ns-day-info.ns-today, 
-            .ns-portlet-wrapper[data-portlet-type='calendar'] .ns-monthly-view td:hover, 
-            .ns-portlet-wrapper[data-portlet-type='calendar'] .ns-monthly-view td.ns-significant-day:hover,
-            .ns-portlet-wrapper[data-portlet-type='calendar'] .ns-monthly-view td:hover .ns-event-view .ns-event-content,
-            .ns-portlet-wrapper[data-portlet-type='calendar'] .ns-monthly-view td.ns-significant-day:hover .ns-event-view .ns-event-content,
-            .ns-portlet-wrapper[data-portlet-type='calendar'] .ns-monthly-view td:hover .ns-event-view .ns-event-content,
-            .uir-machine-headerrow>td,
-            uir-select-input-container uir-field-popup-wrapper, .listcontrol input[type="text"]:focus {
-                background: black !important;
-                outline: 3px solid deepskyblue;
+            .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover {
+                border-width: medium;
+            }
+            .list-group-item, .list-group-item-info {
+                background-color: black !important;
+                outline: 1px solid deepskyblue;
+                color: deepskyblue;
+            }            
+        }
+        @media (min-width: 1200px) {
+            .container {
+                width: 80%;
             }
         }`;
 
-        timeContainerStyle.textContent = `
-            #modifiedTimeLabel {
-                position: fixed;
-                top: .5vmax;
-                left: 50%;
-                transform: translate(-50%, 0);
-                zIndex: 9999;
-                padding: .5vmax;
-                background: rgba(0, 0, 0, .5);
-                backdrop-filter: blur(10px);
-                outline: 1px solid dodgerblue;
-                color: white;
-                border: none;
-                display: grid;
-                justify-items: center;
-            }
-
-            #modifiedTimeLabel > label {
-                display: grid;
-                grid-template-columns: 8fr 4fr 1fr 4fr 4fr;
-                gap: 1vmax;
-                justify-items: start;
-                width: 100%;
-            }
-        `;
-
-        document.head.appendChild(darkModeStyle);
-        document.head.appendChild(timeContainerStyle);
-        if (window.location.href.includes("timebill.nl")) {
-            const timeContainer = document.createElement("div");
-            timeContainer.id = "modifiedTimeLabel"
-                        
-            document.body.appendChild(timeContainer);
-            
-            updateTimeLabel(timeContainer)
-            setInterval(() => updateTimeLabel(timeContainer), 30000);
-        } else if (document.getElementById("modifiedTimeLabel")) {
-            document.body.removeChild(document.getElementById("modifiedTimeLabel"));
+        const toolContainerStyle = document.createElement("style");
+        toolContainerStyle.textContent = `
+        #toolContainer {
+            position: fixed;
+            top: 30%;
+            right: 0;
+            // background: rgba(100, 100, 100, 0.75);
+            backdrop-filter: blur(10px);
+            // outline: 2px solid white;
+            padding: 1vmax 2vmax 1vmax 1vmax;
+            z-index: 9999;
+            display: flex;
+            gap: 1vmax;
         }
+        
+        #toolContainer > * {
+            padding: .5vmax;
+            fontSize: 1.25rem;
+            background: rgba(0, 0, 0, 0.75);
+            outline: 1px solid dodgerblue;
+            color: white;
+            cursor: pointer;
+            // box-shadow: 10px 5px 5px rgb(23, 68, 91);
+        }`;
+    
+        document.head.appendChild(darkModeStyle);
+        document.head.appendChild(toolContainerStyle);
+
+        const hasExpandTitle = (a) => a.getAttribute("title") && a.getAttribute("title").includes("Click to expand");
+
+        const isMiddleLink = (a) => a.parentNode.className.includes("media-middle") && a.parentNode.className.includes("media-body");
+        
+        const toggleExpands = () => {
+            const expandLinks = Array.from(document.querySelectorAll("a")).filter(a => hasExpandTitle(a) && isMiddleLink(a));
+            if (expandLinks.length > 0) {
+                expandLinks.forEach(link => link.click());
+                expanded = !expanded;
+            }
+        }
+
+        const checkDocLinks = () => {
+            highlightRows();
+
+            if (refreshAttempts >= maxRefreshAttempts) {                
+                downloadButton.textContent = "No Documents Found";
+                clearInterval(checkInterval);
+                return;
+            }
+
+            if (!expanded) toggleExpands();
+            docLinks = Array.from(document.querySelectorAll("a")).filter(a => isMiddleLink(a) && !hasExpandTitle(a));
+            refreshAttempts++;
+
+            if (docLinks.length > 0) {
+                downloadButton.textContent = `Download ${docLinks.length} Documents`;
+                clearInterval(checkInterval);
+
+            } else {
+                downloadButton.textContent = `Waiting for CCS...${((refreshAttempts / maxRefreshAttempts) * 100).toFixed(0)}%`;
+            }
+        };
+
+        const refreshDocLinks = () => {
+            toggleExpands();
+            docLinks = [];
+            refreshAttempts = 0;
+            downloadButton.textContent = `Waiting for CCS...`;
+            checkInterval = setInterval(checkDocLinks, 250);
+        };
+
+        const downloadLinks = () => {
+            console.info("beginning download.", docLinks.length, "files");
+            // let count = 0;
+            docLinks.forEach((a, i) => {
+                setTimeout(() => {
+                    a.click();
+                    // count++;
+                    // console.info(count, ". clicked",a.getAttribute("title"))
+                }, i * 100);
+            });
+        }
+
+        const highlightRows = () => {
+            document.querySelectorAll("tr").forEach(tr => {
+                
+                const trText = tr.textContent.toLowerCase();
+                
+                for (const [keyword, border] of Object.entries(entryHighlightStyleMap)) {
+                    if (trText.includes(keyword)) {
+                        tr.style.borderLeft = border;
+                        break;
+                    }
+                }
+            });
+        }
+
+        const buttonContainer = document.createElement("div");
+        const downloadButton = document.createElement("button");
+        const refreshButton = document.createElement("button");
+
+        if (window.location.href.includes("vw/CaseSummary")) {
+            buttonContainer.id = "toolContainer"
+            
+            downloadButton.textContent = "No Documents Found";
+            
+            refreshButton.textContent = "Refresh";
+
+            buttonContainer.appendChild(downloadButton);
+            buttonContainer.appendChild(refreshButton);
+
+            downloadButton.addEventListener("click", downloadLinks);
+            refreshButton.addEventListener("click", refreshDocLinks);
+
+            document.body.appendChild(buttonContainer);
+        } else if (document.getElementById("toolContainer")) {
+            document.body.removeChild(buttonContainer);
+        }
+
+        let refreshAttempts = 0;
+        let checkInterval = setInterval(checkDocLinks, 250);
     });
 })();
