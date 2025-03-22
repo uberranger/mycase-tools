@@ -18,58 +18,174 @@
     window.addEventListener("load", () => {
         const darkModeStyle = document.createElement("style");
         darkModeStyle.textContent = `@media (prefers-color-scheme: dark) {
-    :root, html, body, footer, .footer, footer div, .footer div, .panel, .form-control, 
-    .nav-tabs>li>a, .nav-tabs>li>a:hover, .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, 
-    .navbar-inverse, nav.framework-header.navbar.navbar-inverse, div.nav-subrow, 
-    .alert-info, .btn-default, option {
+    :root, html, body {
         background-color: #1e1e1e;
         color: #e0e0e0;
     }
 
-    div.nav-subrow {
+    /* Header and navigation */
+    .framework-header,
+    .navbar,
+    .navbar-inverse,
+    .nav-subrow {
         background-color: #2a2a2a !important;
+        color: #f0f0f0;
+        border-color: #444;
     }
 
-    .table-striped>tbody>tr:nth-of-type(odd) {
-        background-color: #2b2b2b;
+    .navbar-nav > li > a,
+    .navbar-nav > li > a:hover,
+    .navbar-brand {
+        color: #f0f0f0 !important;
     }
 
-    .modal-content, .modal-content .modal-header, .modal-content .modal-footer {
+    /* Tabs */
+    .nav-tabs > li > a {
         background-color: #2c2c2c;
+        border-color: #444 #444 transparent #444;
+        color: #ddd;
     }
 
-    a {
-        color: #4dabf7;
+    .nav-tabs > li > a:hover {
+        background-color: #3a3a3a;
+        border-color: #555 #555 transparent #555;
     }
 
-    .btn-primary, .btn-primary:hover {
+    .nav-tabs > li.active > a,
+    .nav-tabs > li.active > a:hover {
+        background-color: #1e1e1e;
+        color: #fff;
+        border: 1px solid #666;
+        border-bottom-color: transparent;
+    }
+
+    /* Buttons */
+    .btn-default {
+        background-color: #2c2c2c;
+        color: #e0e0e0;
+        border: 1px solid #555;
+    }
+
+    .btn-primary,
+    .btn-primary:hover {
         background-color: #4dabf7;
         color: #fff;
         border: none;
     }
 
-    tr:hover, .table-hover>tbody>tr:hover, .panel-default>.panel-heading {
-        background-color: #333;
-        color: #f0f0f0;
+    /* Panels */
+    .panel,
+    .panel-default {
+        background-color: #262626;
+        border-color: #444;
+        color: #e0e0e0;
     }
 
-    .text-primary {
+    .panel-default > .panel-heading {
+        background-color: #333;
+        color: #fff;
+    }
+
+    /* Alerts */
+    .alert-info {
+        background-color: #29323c;
+        border-color: #3a4a5a;
+        color: #d9edf7;
+    }
+
+    /* Modals */
+    .modal-content,
+    .modal-header,
+    .modal-footer {
+        background-color: rgba(30, 30, 30, 0.95);
+        color: #f5f5f5;
+        border-color: #444;
+    }
+
+    /* Form controls */
+    .form-control,
+    select,
+    option,
+    input,
+    textarea {
+        background-color: #1f1f1f;
+        color: #e0e0e0;
+        border: 1px solid #555;
+    }
+
+    /* Tables */
+    .table-striped > tbody > tr:nth-of-type(odd),
+    table.results tr:nth-of-type(odd) {
+        background-color: #252525;
+    }
+
+    .table-hover > tbody > tr:hover,
+    table.results tr:hover {
+        background-color: #333;
+    }
+
+    table.results .result-col-left,
+    table.results .result-col-middle,
+    table.results .result-col-right {
+        border-color: #444;
+        background-color: #202020;
+    }
+
+    table.results .result-title {
         color: #8ab4f8;
     }
 
-    .text-muted { 
-        color: #b0b0b0;
+    table.results .result-title:hover {
+        color: #ff7e6b;
     }
 
-    .nav-tabs>li.active>a, .nav-tabs>li.active>a:hover {
-        border-width: medium;
-        background-color: #2e2e2e;
+    table.results .result-subtitle {
+        color: #a0a0a0;
     }
 
-    .list-group-item, .list-group-item-info {
-        background-color: #1f1f1f !important;
-        border: 1px solid #4dabf7;
-        color: #cfd8dc;
+    /* Utility text */
+    .text-primary {
+        color: #8ab4f8 !important;
+    }
+
+    .text-muted,
+    .ccs-parties td.ccs-party-c2,
+    .ccs-charges td.ccs-charge-c2,
+    .ccs-bonds td.ccs-bond-c2 {
+        color: #a0a0a0 !important;
+    }
+
+    /* Footer - fixed bright areas */
+    footer, .footer,
+    footer div, .footer div {
+        background-color: #1a1a1a !important;
+        background-image: none !important;
+        background: none !important;
+        box-shadow: none !important;
+        color: #ccc !important;
+    }
+
+    footer::before,
+    footer::after,
+    .footer::before,
+    .footer::after {
+        background: none !important;
+        background-image: none !important;
+        box-shadow: none !important;
+        content: none !important;
+    }
+
+    .media-left .icon32 {
+        filter: brightness(0.8) contrast(1.1);
+    }
+
+    /* Disabled text and links */
+    a.disabled,
+    .btn.disabled,
+    .ccs a.disabled,
+    .result-toolbar .btn.disabled,
+    .result-toolbar .btn:disabled {
+        color: #555 !important;
     }
 }
 `;
