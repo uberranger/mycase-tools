@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "MyCase Tools",
   "version": "1.0",
-  "description": "Adds various tools to MyCase.",
+  "description": "Adds dark mode and various tools to MyCase.",
   "permissions": [],
   "host_permissions": [
     "https://public.courts.in.gov/mycase/*",
