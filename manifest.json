@@ -3,7 +3,7 @@
   "name": "MyCase Tools",
   "version": "1.0",
   "description": "Adds dark mode and various tools to MyCase.",
-  "permissions": [],
+  "permissions": ["activeTab"],
   "host_permissions": [
     "https://public.courts.in.gov/mycase/*",
     "https://public.courts.in.gov/AttorneyDashboard/*",
@@ -16,10 +16,11 @@
         "https://public.courts.in.gov/AttorneyDashboard/*",
         "https://public.courts.in.gov/Portal/*"
       ],
-      "js": ["content.js"]
+      "js": ["content.js"],
+      "css": ["dark-mode.css", "tools.css"]
     }
   ],
    "icons": {
-       "200": "icon.png"
+       "128": "icon.png"
      }
 }

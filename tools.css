@@ -1,0 +1,50 @@
+#toolContainer {
+    position: fixed;
+    top: 30%;
+    right: 0;
+    background: rgba(30, 30, 30, 0.75); /* soft dark gray */
+    backdrop-filter: blur(12px);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem 0 0 0.5rem;
+    padding: 1vmax 2vmax 1vmax 1vmax;
+    z-index: 9999;
+    display: flex;
+    gap: 1vmax;
+    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.4);
+}
+
+#toolContainer > * {
+    padding: 0.6vmax 1vmax;
+    font-size: 1.1rem;
+    background: rgba(45, 45, 45, 0.85); /* deeper gray for contrast */
+    border: 1px solid rgba(77, 170, 247, 0.4); /* soft blue edge */
+    border-radius: 0.4rem;
+    color: #e0f0ff;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+#toolContainer > *:hover {
+    background: rgba(70, 70, 70, 0.85);
+    transform: translateY(-2px);
+}
+
+.session-hightlight {
+    border-left: 20px solid goldenrod;
+}
+
+.enotice-highlight {
+    border-left: 5px solid saddlebrown;
+}
+
+.paper-hightlight {
+    border-left: 5px solid midnightblue;
+}
+
+.appearance-highlight {
+    border-left: 10px solid indigo;
+}
+
+.judicial-highlight {
+    border-left: 20px solid green;
+}

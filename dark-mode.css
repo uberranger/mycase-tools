@@ -1,0 +1,176 @@
+@media (prefers-color-scheme: dark) {
+
+    :root,
+    html,
+    body {
+        background-color: #1e1e1e !important;
+        color: #e0e0e0 !important;
+    }
+
+    /* Header and navigation */
+    .framework-header,
+    .navbar,
+    .navbar-inverse,
+    .nav-subrow {
+        background-color: #2a2a2a !important;
+        color: #f0f0f0 !important;
+        border-color: #444 !important;
+    }
+
+    .navbar-nav>li>a,
+    .navbar-nav>li>a:hover,
+    .navbar-brand {
+        color: #f0f0f0 !important;
+    }
+
+    /* Tabs */
+    .nav-tabs>li>a {
+        background-color: #2c2c2c !important;
+        border-color: #444 #444 transparent #444 !important;
+        color: #ddd !important;
+    }
+
+    .nav-tabs>li>a:hover {
+        background-color: #3a3a3a !important;
+        border-color: #555 #555 transparent #555 !important;
+    }
+
+    .nav-tabs>li.active>a,
+    .nav-tabs>li.active>a:hover {
+        background-color: #1e1e1e !important;
+        color: #fff !important;
+        border: 1px solid #666 !important;
+        border-bottom-color: transparent !important;
+    }
+
+    /* Buttons */
+    .btn-default {
+        background-color: #2c2c2c !important;
+        color: #e0e0e0 !important;
+        border: 1px solid #555 !important;
+    }
+
+    .btn-primary,
+    .btn-primary:hover {
+        background-color: #4dabf7 !important;
+        color: #fff !important;
+        border: none !important;
+    }
+
+    /* Panels */
+    .panel,
+    .panel-default {
+        background-color: #262626 !important;
+        border-color: #444 !important;
+        color: #e0e0e0 !important;
+    }
+
+    .panel-default>.panel-heading {
+        background-color: #333 !important;
+        color: #fff !important;
+    }
+
+    /* Alerts */
+    .alert-info {
+        background-color: #29323c !important;
+        border-color: #3a4a5a !important;
+        color: #d9edf7 !important;
+    }
+
+    /* Modals */
+    .modal-content,
+    .modal-header,
+    .modal-footer {
+        background-color: rgba(30, 30, 30, 0.95) !important;
+        color: #f5f5f5 !important;
+        border-color: #444 !important;
+    }
+
+    /* Form controls */
+    .form-control,
+    select,
+    option,
+    input,
+    textarea {
+        background-color: #1f1f1f !important;
+        color: #e0e0e0 !important;
+        border: 1px solid #555 !important;
+    }
+
+    /* Tables */
+    .table-striped>tbody>tr:nth-of-type(odd),
+    table.results tr:nth-of-type(odd) {
+        background-color: #252525 !important;
+    }
+
+    .table-hover>tbody>tr:hover,
+    table.results tr:hover {
+        background-color: #333 !important;
+    }
+
+    table.results .result-col-left,
+    table.results .result-col-middle,
+    table.results .result-col-right {
+        border-color: #444 !important;
+        background-color: #202020 !important;
+    }
+
+    table.results .result-title {
+        color: #8ab4f8 !important;
+    }
+
+    table.results .result-title:hover {
+        color: #ff7e6b !important;
+    }
+
+    table.results .result-subtitle {
+        color: #a0a0a0 !important;
+    }
+
+    /* Utility text */
+    .text-primary {
+        color: #8ab4f8 !important;
+    }
+
+    .text-muted,
+    .ccs-parties td.ccs-party-c2,
+    .ccs-charges td.ccs-charge-c2,
+    .ccs-bonds td.ccs-bond-c2 {
+        color: #a0a0a0 !important;
+    }
+
+    /* Footer - fixed bright areas */
+    footer,
+    .footer,
+    footer div,
+    .footer div {
+        background-color: #1a1a1a !important;
+        background-image: none !important;
+        background: none !important;
+        box-shadow: none !important;
+        color: #ccc !important;
+    }
+
+    footer::before,
+    footer::after,
+    .footer::before,
+    .footer::after {
+        background: none !important;
+        background-image: none !important;
+        box-shadow: none !important;
+        content: none !important;
+    }
+
+    .media-left .icon32 {
+        filter: brightness(0.8) contrast(1.1) !important;
+    }
+
+    /* Disabled text and links */
+    a.disabled,
+    .btn.disabled,
+    .ccs a.disabled,
+    .result-toolbar .btn.disabled,
+    .result-toolbar .btn:disabled {
+        color: #555 !important;
+    }
+}
