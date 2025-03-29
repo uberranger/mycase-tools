@@ -11,10 +11,18 @@
     .framework-header,
     .navbar,
     .navbar-inverse,
-    .nav-subrow {
+    .nav-subrow,
+    av.framework-header.navbar.navbar-inverse,
+    nav.framework-header.navbar.navbar-inverse,
+    div.nav-subrow.hidden-print {
+        background-image: none !important;
         background-color: #2a2a2a !important;
         color: #f0f0f0 !important;
         border-color: #444 !important;
+    }
+
+    a {
+        color: #8ab4f8 !important; /* Bright blue for links */
     }
 
     .navbar-nav>li>a,
@@ -24,13 +32,15 @@
     }
 
     /* Tabs */
-    .nav-tabs>li>a {
+    .nav-tabs>li>a ,
+    .dropdown-menu {
         background-color: #2c2c2c !important;
         border-color: #444 #444 transparent #444 !important;
         color: #ddd !important;
     }
 
-    .nav-tabs>li>a:hover {
+    .nav-tabs>li>a:hover,
+    .dropdown-menu>li>a:hover {
         background-color: #3a3a3a !important;
         border-color: #555 #555 transparent #555 !important;
     }
