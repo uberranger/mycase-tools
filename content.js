@@ -4,7 +4,7 @@
     console.log("MyCase Tools Script Loaded!");
 
     const maxRefreshAttempts = 10;
-    const clickDelay = 250;
+    const clickDelay = 400;
     let docLinks = [];
     let expanded = false;
 
