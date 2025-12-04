@@ -4,6 +4,7 @@
     console.log("MyCase Tools Script Loaded!");
 
     const maxRefreshAttempts = 10;
+    const clickDelay = 250;
     let docLinks = [];
     let expanded = false;
 
@@ -66,7 +67,7 @@
                     a.click();
                     // count++;
                     // console.info(count, ". clicked",a.getAttribute("title"))
-                }, i * 100);
+                }, i * clickDelay);
             });
         }
 
