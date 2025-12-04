@@ -4,7 +4,7 @@
     console.log("MyCase Tools Script Loaded!");
 
     const maxRefreshAttempts = 10;
-    const clickDelay = 400;
+    // const clickDelay = 400;
     let docLinks = [];
     let expanded = false;
 
@@ -29,46 +29,51 @@
             }
         }
 
-        const checkDocLinks = () => {
-            highlightRows();
+        const getDocLinks = () => {
+            if (!expanded) toggleExpands();
 
-            if (refreshAttempts >= maxRefreshAttempts) {
+            if (checkInterval && refreshAttempts >= maxRefreshAttempts) {
                 downloadButton.textContent = "No Documents Found";
                 clearInterval(checkInterval);
                 return;
             }
-
-            if (!expanded) toggleExpands();
-            docLinks = Array.from(document.querySelectorAll("a")).filter(a => isMiddleLink(a) && !hasExpandTitle(a));
             refreshAttempts++;
 
-            if (docLinks.length > 0) {
-                downloadButton.textContent = `Download ${docLinks.length} Documents`;
-                clearInterval(checkInterval);
+            return Array.from(document.querySelectorAll("a")).filter(a => isMiddleLink(a) && !hasExpandTitle(a));
+        }
 
-            } else {
-                downloadButton.textContent = `Waiting for CCS...${((refreshAttempts / maxRefreshAttempts) * 100).toFixed(0)}%`;
-            }
-        };
-
-        const refreshDocLinks = () => {
-            toggleExpands();
+        const refresh = () => {
+            highlightRows();
             docLinks = [];
             refreshAttempts = 0;
-            downloadButton.textContent = `Waiting for CCS...`;
-            checkInterval = setInterval(checkDocLinks, 250);
+            downloadButton.textContent = `Loading...`;
+            // checkInterval = setInterval(checkDocLinks, 250);
+            checkInterval = setInterval(() => {
+                docLinks = getDocLinks(); if (docLinks.length > 0) {
+                    downloadButton.textContent = `Download ${docLinks.length} Documents`;
+                    clearInterval(checkInterval);
+
+                } else {
+                    downloadButton.textContent = `Loading...${((refreshAttempts / maxRefreshAttempts) * 100).toFixed(0)}%`;
+                }
+            }, 250);
+
         };
 
-        const downloadLinks = () => {
+        const clickNextLink = () => {
+            if (docLinks.length === 0) return;
+            docLinks[0].click();
+            // docLinks[0].link.click();
+            docLinks.shift();
+        }
+
+        const startDownload = () => {
             console.info("beginning download.", docLinks.length, "files");
-            // let count = 0;
-            docLinks.forEach((a, i) => {
-                setTimeout(() => {
-                    a.click();
-                    // count++;
-                    // console.info(count, ". clicked",a.getAttribute("title"))
-                }, i * clickDelay);
-            });
+
+            if (docLinks.length === 0) refresh();
+            chrome.runtime.sendMessage({ type: "courts-download-start" });
+
+            clickNextLink();
         }
 
         const highlightRows = () => {
@@ -85,6 +90,10 @@
             });
         }
 
+        chrome.runtime.onMessage.addListener((msg) => {
+            if (msg && msg.type === 'courts-download') clickNextLink();
+        });
+
         const buttonContainer = document.createElement("div");
         const downloadButton = document.createElement("button");
         const refreshButton = document.createElement("button");
@@ -99,8 +108,8 @@
             buttonContainer.appendChild(downloadButton);
             buttonContainer.appendChild(refreshButton);
 
-            downloadButton.addEventListener("click", downloadLinks);
-            refreshButton.addEventListener("click", refreshDocLinks);
+            downloadButton.addEventListener("click", startDownload);
+            refreshButton.addEventListener("click", refresh);
 
             document.body.appendChild(buttonContainer);
         } else if (document.getElementById("toolContainer")) {
@@ -108,6 +117,7 @@
         }
 
         let refreshAttempts = 0;
-        let checkInterval = setInterval(checkDocLinks, 250);
+        let checkInterval = undefined;
+        refresh();
     });
 })();
