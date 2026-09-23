@@ -48,3 +48,32 @@
 .judicial-highlight {
     border-left: 20px solid green;
 }
+
+.mycase-recent-hidden,
+#mycase-recent-panel[hidden],
+#mycase-recent-panel [hidden] {
+    display: none !important;
+}
+
+#mycase-recent-panel .recent-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+#mycase-recent-panel .recent-fields > label {
+    flex: 1 1 170px;
+    min-width: 0;
+}
+
+#mycase-recent-panel .recent-status { margin-top: 16px; }
+#mycase-recent-panel .recent-pagination { display: flex; gap: 8px; }
+#mycase-recent-panel .recent-case-link { padding: 0; text-align: left; }
+
+/* The native Knockout tab stays selected internally while Recent is open. */
+#searchByTabs.mycase-recent-active > li.active > a:not(#tabByRecent) {
+    background: transparent !important;
+    border-color: transparent !important;
+    font-weight: normal;
+}
